@@ -1,0 +1,80 @@
+<h1>Smiley Game</h1>
+<div id='character' style="background: url('smiley.png'); width:50px; height:50px; background-size:cover; position:absolute; top: 50px; left:150px;"> </div>
+<div id='treasure' style="background: url('treasure.png'); width:70px; height:70px; background-size:cover; position:absolute;"> </div>
+<div>Score: <div id='score'>0</div></div>
+<div>Number of Tresure Boxes Found: <div id='counter'>0</div></div>
+
+<script>
+var character = {
+	x: 100,
+	y: 100
+}
+
+var score = 0;
+
+var treasure = {
+	x: Math.random()*700,
+	y: Math.random()*400
+}
+
+//display the character and the treasure on html
+function displayStuff()
+{
+	treasure = {
+		x: treasure.x+(Math.random()*20-10),
+		y: treasure.y+(Math.random()*20-10)
+	}
+	
+	document.getElementById('character').style.top = character.y;
+	document.getElementById('character').style.left = character.x;
+		
+	document.getElementById('treasure').style.top = treasure.y;	
+	document.getElementById('treasure').style.left = treasure.x;
+	
+	document.getElementById('sample').style.background = 
+	"url('smiley.png')";
+}
+
+	//execute displayStuff function every 30ms
+	setInterval(displayStuff,30);
+	
+	//detect key activity
+	document.onkeydown = function(e){
+		console.log(e.keyIdentifier, character, treasure);
+		if(e.keyIdentifier == 'Left')
+		{
+			character.x = character.x - 30; //grab whatever is in x, subtract 30 and store that into x
+  		}
+		else if(e.keyIdentifier == 'Right')
+		{
+			character.x = character.x + 30;
+		}
+		else if(e.keyIdentifier == 'Down')
+		{
+			character.y = character.y + 30;
+		}
+		else if(e.keyIdentifier == 'Up')
+		{
+			character.y = character.y - 30;
+		}
+	
+		//see if the character and the treasure collided
+		if( treasure.x > (character.x -20) && treasure.x < (character.x + 20) && treasure.y > (character.y -20) && treasure.y < (character.y +20))
+		{
+			treasure = {
+				x: Math.random()*700,
+				y: Math.random()*700
+			}
+			score = score + 10;
+			document.getElementById('score').innerHTML = score;
+		}
+		
+		//execute displaystuff function that draws the character and the treasure box
+		displayStuff();
+	
+	};
+
+	displayStuff();
+	
+</script>
+ 
