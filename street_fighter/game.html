@@ -58,11 +58,13 @@ body{
 	
 	var character1={
 		top: 185,
-		left: 100
+		left: 100,
+		health: 100
 	}
 	var character2={
 		top: 185,
-		left: 400
+		left: 400,
+		health: 100
 	}
 
 	function GameLoop()
@@ -81,6 +83,10 @@ body{
 		document.getElementById('character2').style.top = character2.top;
 		document.getElementById('character2').style.left = character2.left;
 
+		document.getElementById('healthbar1').style.width = character1.health*2.3;
+		document.getElementById('healthbar2').style.width	 = character2.health*2.3;
+
+
 		if(action == 'STANDING')
 		{
 			document.getElementById('character1').style.background = "url('ken.png') -"+which_frame*70+"px -80px";
@@ -93,6 +99,10 @@ body{
 		}
 		else if(action == 'PUNCH')
 		{
+			if(which_frame == 2 && character1.left > character2.left - 150 && character1.left < character2.left + 50)
+			{
+				character2.health = character2.health-5;
+			}
 			document.getElementById('character1').style.background = "url('ken.png') -"+which_frame*70+"px -160px";
 			which_frame = which_frame+1;
 
@@ -104,6 +114,11 @@ body{
 		}
 		else if(action == 'ROUND_KICK')
 		{
+			if(which_frame == 2 && character1.left > character2.left - 150 && character1.left < character2.left + 50)
+			{
+				character2.health = character2.health-8;
+			}
+
 			document.getElementById('character1').style.background = "url('ken.png') -"+which_frame*70+"px -560px";
 			which_frame = which_frame+1;
 
@@ -113,25 +128,24 @@ body{
 				action = 'STANDING';
 			}
 		}
-
 	}
 
 	document.onkeydown = function(e)
 	{
 		console.log(e);
-		if(e.keyIdentifier == "Left")
+		if(e.keyCode == 37 && character1.left > 0)
 		{
 			character1.left = character1.left-10;
 		}
-		else if(e.keyIdentifier == "Right")
+		else if(e.keyCode == 39 && character1.left < 800)
 		{
 			character1.left = character1.left+10;
 		}
-		else if(e.keyIdentifier == "U+002E")
+		else if(e.keyCode == 190)
 		{
 			action = 'PUNCH';
 		}
-		else if(e.keyIdentifier == "U+002F")
+		else if(e.keyCode == 191)
 		{
 			action = 'ROUND_KICK';
 		}
