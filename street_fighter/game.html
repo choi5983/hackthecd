@@ -1,10 +1,143 @@
 <style>
-	#character{
-		background: url('ken.png');
-		width:70px;
-		height:80px;
-		background-color:red;
-	}
+body{
+	background-color:black;
+}
+#background{
+	width: 800px;
+	height:260px;
+	background: url('background_blanka.gif');
+	background-size: cover;
+}
+
+#character1{
+	background: url('ken.png') 0px -80px;
+	width:70px;
+	height:80px;
+	position:absolute;
+}
+#character2{
+	background: url('ken.png') -70px -160px;
+	width:70px;
+	height:80px;
+	position:absolute;
+	transform: scaleX(-1);
+}
+#healthbar1{
+	width:200px;
+	height:15px;
+	background-color:lightgreen;
+	border:3px solid green;
+	position:absolute;
+	top:30px;
+	left:25px;
+}
+#healthbar2{
+	width:200px;
+	height:15px;
+	background-color:pink;
+	border:3px solid red;
+	position:absolute;
+	top:30px;
+	left:325px;
+}
 </style>
 
-<div id='character'></div>
+<div id='background'>
+	<div id='character1'></div>
+	<div id='character2'></div>
+
+	<div id='healthbar1'></div>
+	<div id='healthbar2'></div>
+</div>
+
+
+<script>
+
+	var action = 'STANDING';
+	var which_frame = 0;
+	
+	var character1={
+		top: 185,
+		left: 100
+	}
+	var character2={
+		top: 185,
+		left: 400
+	}
+
+	function GameLoop()
+	{
+		displayCharacters();
+	}
+
+	setInterval(GameLoop, 150);
+
+
+	function displayCharacters()
+	{
+		document.getElementById('character1').style.top = character1.top;
+		document.getElementById('character1').style.left = character1.left;
+
+		document.getElementById('character2').style.top = character2.top;
+		document.getElementById('character2').style.left = character2.left;
+
+		if(action == 'STANDING')
+		{
+			document.getElementById('character1').style.background = "url('ken.png') -"+which_frame*70+"px -80px";
+			which_frame = which_frame+1;
+
+			if(which_frame >= 4)
+			{
+				which_frame = 0;
+			}
+		}
+		else if(action == 'PUNCH')
+		{
+			document.getElementById('character1').style.background = "url('ken.png') -"+which_frame*70+"px -160px";
+			which_frame = which_frame+1;
+
+			if(which_frame >= 3)
+			{
+				which_frame = 0;
+				action = 'STANDING';
+			}
+		}
+		else if(action == 'ROUND_KICK')
+		{
+			document.getElementById('character1').style.background = "url('ken.png') -"+which_frame*70+"px -560px";
+			which_frame = which_frame+1;
+
+			if(which_frame >= 5)
+			{
+				which_frame = 0;
+				action = 'STANDING';
+			}
+		}
+
+	}
+
+	document.onkeydown = function(e)
+	{
+		console.log(e);
+		if(e.keyIdentifier == "Left")
+		{
+			character1.left = character1.left-10;
+		}
+		else if(e.keyIdentifier == "Right")
+		{
+			character1.left = character1.left+10;
+		}
+		else if(e.keyIdentifier == "U+002E")
+		{
+			action = 'PUNCH';
+		}
+		else if(e.keyIdentifier == "U+002F")
+		{
+			action = 'ROUND_KICK';
+		}
+
+		which_frame = 0;
+	}
+
+	displayCharacters();
+</script>
